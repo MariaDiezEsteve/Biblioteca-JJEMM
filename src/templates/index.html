@@ -11,17 +11,38 @@
 <body> 
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
-.caja{
-    margin: 10%;
-    margin-left: 35%;
-    margin-right: 35%;
-}
+
 .t{
   font-family: 'Lobster', cursive;
 }
 </style>
 <div class="caja">
-        <h1> Hola mierda</h1>
+        <h1 class="text-center nt-5 nb-5 text-info"> Hola mierda</h1>
+        <div class="container">
+            <div class="card shadow-box">
+                <div class="card-body">
+                    <form action="" method="post">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>DNI</label>
+                                <input type="text" class="form-control mb3" name="DNI">
+                                <label>Nombre</label>
+                                <input type="text" class="form-control mb3" name="nombre">
+                                <label>Apellidos</label>
+                                <input type="text" class="form-control mb3" name="apellidos">
+                                <label>Correo</label>
+                                <input type="mail" class="form-control mb3" name="email">
+                                <label>Contraseña</label>
+                                <input type="password" class="form-control mb3" name="password">
+                            </div>
+                            <div>
+                                <button class="btn btn-primary mb-3 mt-4" type="submit">Guardar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
 </div>
 </body>
 </html>
