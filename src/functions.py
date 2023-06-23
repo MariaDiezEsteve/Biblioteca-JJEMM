@@ -1,6 +1,8 @@
 from flask import render_template
 # Import the file database.py
 import src.database as db
+
+
 def get_books():
     con = db.conectdb()
     cursor = con.cursor()
@@ -14,7 +16,8 @@ def get_books():
 
     return render_template('books.html', data=books_array)
     cursor.close()
-    
+
+
 def get_videos():
     con = db.conectdb()
     cursor = con.cursor()
@@ -28,8 +31,8 @@ def get_videos():
 
     return render_template('videos.html', data=videos_array)
     cursor.close()
-    
-    
+
+
 def get_soundtracks():
     con = db.conectdb()
     cursor = con.cursor()
@@ -43,7 +46,8 @@ def get_soundtracks():
 
     return render_template('soundtrack.html', data=soundtracks_array)
     cursor.close()
-    
+
+
 def get_users():
     con = db.conectdb()
     cursor = con.cursor()
@@ -57,13 +61,13 @@ def get_users():
 
     return render_template('users.html', data=users_array)
     cursor.close()
-    
 
-    
+
 def get_category_of_books():
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("SELECT Category, COUNT(Category) AS Total FROM books GROUP BY Category")
+    cursor.execute(
+        "SELECT Category, COUNT(Category) AS Total FROM books GROUP BY Category")
 
     mycategorys = cursor.fetchall()
     categorys_array = []
@@ -73,11 +77,13 @@ def get_category_of_books():
 
     return render_template('category_books.html', data=categorys_array)
     cursor.close()
-    
+
+
 def get_category_of_videos():
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("SELECT Category, COUNT(Category) AS Total FROM videos GROUP BY Category")
+    cursor.execute(
+        "SELECT Category, COUNT(Category) AS Total FROM videos GROUP BY Category")
 
     mycategorys = cursor.fetchall()
     categorys_array = []
@@ -87,11 +93,13 @@ def get_category_of_videos():
 
     return render_template('category_videos.html', data=categorys_array)
     cursor.close()
-    
+
+
 def get_category_for_aventure():
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("SELECT Title, Category FROM books WHERE Category='Aventura'")
+    cursor.execute(
+        "SELECT Title, Category FROM books WHERE Category='Aventura'")
 
     mycategorys = cursor.fetchall()
     categorys_array = []
@@ -100,4 +108,19 @@ def get_category_for_aventure():
         categorys_array.append(dict(zip(categorys_col_Names, category)))
 
     return render_template('category_for_aventure.html', data=categorys_array)
-    cursor.close()   
+    cursor.close()
+
+
+def books_and_videos_for_age():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("SELECT idbooks AS ID, Title, AgeRating FROM books WHERE AgeRating IN ('Infantil', 'Juvenil', 'Todos los públicos') UNION  SELECT idvideos, Title, AgeRating FROM videos WHERE AgeRating IN ('Infantil', 'Juvenil', 'Todos los públicos')")
+
+    mycategorys = cursor.fetchall()
+    categorys_array = []
+    categorys_col_Names = [column[0] for column in cursor.description]
+    for category in mycategorys:
+        categorys_array.append(dict(zip(categorys_col_Names, category)))
+
+    return render_template('category_for_age.html', data=categorys_array)
+    cursor.close()
