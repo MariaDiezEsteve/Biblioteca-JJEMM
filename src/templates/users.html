@@ -10,35 +10,32 @@
 </head>
 <body> 
 <div class="caja">
-        <h1 class="text-center nt-5 nb-5 text-info"> Hola mierda</h1>
+        <h1 class="text-center nt-5 nb-5 text-info"> ¡Agur patata! ¡Kaixo Pepino!</h1>
         <div class="container">
             <div class="card shadow-box">
                 <div class="card-body">
                <table class="table table-border">
                 <thead>
                     <th scope="col">#</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Language</th>
-                    <th scope="col">AgeRating</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">State</th>
-                    <th scope="col">Edit</th>
-                    <th scope="col">Delete</th>
+                    <th scope="col">DNI</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Lastname</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Rol</th>
+                 
                 </thead>
                
                 <tbody>
                     {% for d in data %}
                         <tr>
-                            <td>{{d.idbooks}}</td>  
-                            <td>{{d.Title}}</td>   
-                            <td>{{d.Author}}</td>  
-                            <td>{{d.Language}}</td>  
-                            <td>{{d.AgeRating}}</td>
-                            <td>{{d.Category}}</td>  
-                            <td>{{d.State}}</td>  
-                            <td><button class="btn btn-primary btn-sm" id="">Edit</button></td>  
-                            <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>       
+                            <td>{{d.iduser}}</td>  
+                            <td>{{d.DNI}}</td>   
+                            <td>{{d.Name}}</td>  
+                            <td>{{d.Lastname}}</td>   
+                            <td>{{d.Email}}</td>  
+                            <td>{{d.Password}}</td>   
+                            <td>{{d.Rol}}</td> 
                         </tr> 
                     {% endfor %}
                 </tbody>
