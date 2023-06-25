@@ -32,6 +32,11 @@ def indexu():
     return get_users()
 
 
+@app.route("/loans")
+def indexl():
+    return get_loans()
+
+
 @app.route("/category_books")
 def category_books():
     return get_category_of_books()
@@ -50,6 +55,16 @@ def category_aventure():
 @app.route("/category_for_age")
 def category_age():
     return books_and_videos_for_age()
+
+
+@app.route("/books_by_language")
+def language():
+    return books_by_languages()
+
+
+@app.route("/state_of_products")
+def state():
+    return state_of_products()
 
 
 # TO EXECUTE THE APPLICATION

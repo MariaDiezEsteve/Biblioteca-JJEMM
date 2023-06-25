@@ -63,6 +63,21 @@ def get_users():
     cursor.close()
 
 
+def get_loans():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM loands")
+
+    myloans = cursor.fetchall()
+    loans_array = []
+    loans_col_Names = [column[0] for column in cursor.description]
+    for loan in myloans:
+        loans_array.append(dict(zip(loans_col_Names, loan)))
+
+    return render_template('loans.html', data=loans_array)
+    cursor.close()
+
+
 def get_category_of_books():
     con = db.conectdb()
     cursor = con.cursor()
@@ -123,4 +138,61 @@ def books_and_videos_for_age():
         categorys_array.append(dict(zip(categorys_col_Names, category)))
 
     return render_template('category_for_age.html', data=categorys_array)
+    cursor.close()
+
+
+def books_by_languages():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute(
+        "SELECT Language, COUNT(*) AS Total FROM books GROUP BY Language;")
+
+    mylanguages = cursor.fetchall()
+    languages_array = []
+    languages_col_Names = [column[0] for column in cursor.description]
+    for language in mylanguages:
+        languages_array.append(dict(zip(languages_col_Names, language)))
+
+    return render_template('books_by_languages.html', data=languages_array)
+    cursor.close()
+
+
+def state_of_products():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT idbooks as ID, Title, State FROM books 
+                   UNION
+                   SELECT idvideos as ID, Title, State FROM videos
+                   UNION
+                   SELECT idsoundTracks as ID, Title, State FROM soundTracks;""")
+
+    mystates = cursor.fetchall()
+    states_array = []
+    states_col_Names = [column[0] for column in cursor.description]
+    for state in mystates:
+        states_array.append(dict(zip(states_col_Names, state)))
+
+    return render_template('state_of_products.html', data=states_array)
+    cursor.close()
+
+
+def loan_of_products(iduser):
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT u.iduser, u.Name, u.Lastname, b.Title, v.Title, s.Title
+                    FROM loands l
+                    LEFT JOIN user u ON l.iduser = u.iduser
+                    LEFT JOIN books b ON l.idbooks = b.idbooks
+                    LEFT JOIN videos v ON l.idvideos = v.idvideos
+                    LEFT JOIN soundTracks s ON l.idsoundTracks = s.idsoundTracks
+                    where u.iduser = ?, [iduser];
+                    """)
+
+    myloans = cursor.fetchall()
+    loans_array = []
+    loans_col_Names = [column[0] for column in cursor.description]
+    for loan in myloans:
+        loans_array.append(dict(zip(loans_col_Names, loan)))
+
+    return render_template('loan_of_products/<iduser>.html', data=loans_array)
     cursor.close()
