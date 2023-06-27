@@ -1,9 +1,13 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, url_for
 import os
 from .functions import *
+from flask_cors import CORS
+
 
 
 app = Flask(__name__, template_folder="templates")
+CORS(app)
+
 
 
 @app.route("/")
@@ -65,6 +69,22 @@ def language():
 @app.route("/state_of_products")
 def state():
     return state_of_products()
+
+
+#----------------------DELETE--------------------------
+# @app.route("/books/<int:idbooks>", methods=["POST","DELETE"])
+# def delete_books(idbooks):
+#     delete_books_by_id(idbooks)
+#     return ""
+
+@app.route('/books/<int:idbooks>', methods=['GET','DELETE'])
+def delete_book(idbooks):
+    if delete_books_by_id(idbooks):
+        return "El libro ha sido borrado"
+    else:
+        return "El libro no existe"
+
+    
 
 
 # TO EXECUTE THE APPLICATION

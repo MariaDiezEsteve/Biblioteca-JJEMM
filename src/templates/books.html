@@ -16,7 +16,7 @@
                 <div class="card-body">
                <table class="table table-border">
                 <thead>
-                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Title</th>
                     <th scope="col">Author</th>
                     <th scope="col">Language</th>
@@ -37,8 +37,9 @@
                             <td>{{d.AgeRating}}</td>
                             <td>{{d.Category}}</td>  
                             <td>{{d.State}}</td>  
-                            <td><button class="btn btn-primary btn-sm" id="">Edit</button></td>  
-                            <td><a href="#" class="btn btn-danger btn-sm">Delete</a></td>       
+                            <td><button class="btn btn-primary btn-sm" id="">Edit</button></td> 
+                            <td><button onclick="delete_book_ok('{{d.idbooks}}')" class="btn btn-danger btn-sm" id="">Delete</button></td>  
+                            
                         </tr> 
                     {% endfor %}
                 </tbody>
@@ -47,5 +48,39 @@
             </div>
         </div>
 </div>
+<script>
+  
+
+   
+
+
+
+
+  function delete_book_ok(idbooks) {
+    const url = `http://localhost:5000/books/${idbooks}`;
+    let isError = false;
+    let isLoading = true;
+  
+    fetch(url, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        isLoading = false;
+  
+        if (response.ok) {
+          alert("Libro eliminado"); // Mostrar alerta de éxito
+          location.reload(); // Reiniciar los valores del formulario después de eliminar exitosamente
+        } else {
+          isError = true;
+        }
+      })
+      .catch((error) => {
+        console.log("****ERROR", error);
+        isLoading = false;
+        isError = true;
+      });
+  }
+  
+</script>
 </body>
 </html>

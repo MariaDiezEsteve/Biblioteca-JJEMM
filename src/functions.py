@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import redirect, render_template
 # Import the file database.py
 import src.database as db
 
@@ -196,3 +196,23 @@ def loan_of_products(iduser):
 
     return render_template('loan_of_products/<iduser>.html', data=loans_array)
     cursor.close()
+
+
+#----------------------DELETE--------------------------
+
+def delete_books_by_id(idbooks):
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM books WHERE idbooks = %s", (idbooks,))
+    book= cursor.fetchone()
+    
+    if book:
+        cursor.execute("DELETE FROM books WHERE idbooks = %s", (idbooks,))
+    
+        con.commit()
+        cursor.close()
+        con.close()
+        return True 
+    else:
+        return False
+    
