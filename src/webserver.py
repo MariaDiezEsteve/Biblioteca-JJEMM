@@ -4,10 +4,8 @@ from .functions import *
 from flask_cors import CORS
 
 
-
 app = Flask(__name__, template_folder="templates")
 CORS(app)
-
 
 
 @app.route("/")
@@ -71,20 +69,18 @@ def state():
     return state_of_products()
 
 
-#----------------------DELETE--------------------------
+# ----------------------DELETE--------------------------
 # @app.route("/books/<int:idbooks>", methods=["POST","DELETE"])
 # def delete_books(idbooks):
 #     delete_books_by_id(idbooks)
 #     return ""
 
-@app.route('/books/<int:idbooks>', methods=['GET','DELETE'])
+@app.route('/books/<int:idbooks>', methods=['DELETE'])
 def delete_book(idbooks):
     if delete_books_by_id(idbooks):
         return "El libro ha sido borrado"
     else:
         return "El libro no existe"
-
-    
 
 
 # TO EXECUTE THE APPLICATION

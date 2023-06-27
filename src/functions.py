@@ -198,21 +198,13 @@ def loan_of_products(iduser):
     cursor.close()
 
 
-#----------------------DELETE--------------------------
+# ----------------------DELETE--------------------------
 
 def delete_books_by_id(idbooks):
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("SELECT * FROM books WHERE idbooks = %s", (idbooks,))
-    book= cursor.fetchone()
-    
-    if book:
-        cursor.execute("DELETE FROM books WHERE idbooks = %s", (idbooks,))
-    
-        con.commit()
-        cursor.close()
-        con.close()
-        return True 
-    else:
-        return False
-    
+    cursor.execute("DELETE FROM books WHERE idbooks = %s", (idbooks,))
+
+    con.commit()
+    cursor.close()
+    con.close()
