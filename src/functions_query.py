@@ -179,18 +179,40 @@ def state_of_products():
     cursor.close()
     return render_template('state_of_products.html', data=states_array)
     
-
-
-def loan_of_products(iduser):
+def loans_for_date():
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("""SELECT u.iduser, u.Name, u.Lastname, b.Title, v.Title, s.Title
+    cursor.execute("""SELECT loands.*, 
+    CASE
+        WHEN loands.idbooks IS NOT NULL THEN books.Title
+        WHEN loands.idvideos IS NOT NULL THEN videos.Title
+        WHEN loands.idsoundTracks IS NOT NULL THEN soundTracks.Title
+    END AS Title
+    FROM railway.loands
+    LEFT JOIN railway.books ON loands.idbooks = books.idbooks
+    LEFT JOIN railway.videos ON loands.idvideos = videos.idvideos
+    LEFT JOIN railway.soundTracks ON loands.idsoundTracks = soundTracks.idsoundTracks
+    WHERE loands.LoanDate = '2023-06-26';
+    """)
+
+    myloan_dates = cursor.fetchall()
+    loan_dates_array = []
+    loan_dates_col_Names = [column[0] for column in cursor.description]
+    for loan_date in myloan_dates:
+        loan_dates_array.append(dict(zip(loan_dates_col_Names, loan_date)))
+    cursor.close()
+    return render_template('loans_for_date.html', data=loan_dates_array)
+
+def loans_for_products():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT u.iduser as id, u.Name as name, u.Lastname as lastname, b.Title as book, v.Title as video, s.Title as Soundtrack
                     FROM loands l
                     LEFT JOIN user u ON l.iduser = u.iduser
                     LEFT JOIN books b ON l.idbooks = b.idbooks
                     LEFT JOIN videos v ON l.idvideos = v.idvideos
                     LEFT JOIN soundTracks s ON l.idsoundTracks = s.idsoundTracks
-                    where u.iduser = %s, [iduser];
+                    where u.iduser = 1005;
                     """)
 
     myloans = cursor.fetchall()
@@ -199,7 +221,27 @@ def loan_of_products(iduser):
     for loan in myloans:
         loans_array.append(dict(zip(loans_col_Names, loan)))
 
-    return render_template('loan_of_products/<iduser>.html', data=loans_array)
+    return render_template('loans_for_products.html', data=loans_array)
+    cursor.close()
+    
+def count_records_company():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT RecordCompany, COUNT(*) AS soundTrackCount
+                        FROM railway.soundTracks
+                        WHERE State = 'Disponible'
+                        GROUP BY RecordCompany
+                        HAVING COUNT(*) > 2;
+
+                    """)
+
+    mycompanys = cursor.fetchall()
+    companys_array = []
+    companys_col_Names = [column[0] for column in cursor.description]
+    for company in mycompanys:
+        companys_array.append(dict(zip(companys_col_Names, company)))
+
+    return render_template('recordsCompany_for_state.html', data=companys_array)
     cursor.close()
 
 

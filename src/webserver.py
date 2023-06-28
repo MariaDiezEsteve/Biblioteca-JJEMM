@@ -69,13 +69,22 @@ def create_app(database):
     @app.route("/state_of_products")
     def state():
         return state_of_products()
+    
+    @app.route("/loans_for_date")
+    def loans_date():
+        return loans_for_date()
+    
+    @app.route("/loans_for_products")
+    def loans_products():
+        return loans_for_products()
+    
+    @app.route("/RecordsCompany")
+    def records_company():
+        return count_records_company()    
 
 
     # ----------------------DELETE--------------------------
-    # @app.route("/books/<int:idbooks>", methods=["POST","DELETE"])
-    # def delete_books(idbooks):
-    #     delete_books_by_id(idbooks)
-    #     return ""
+  
 
     @app.route('/books/<int:idbooks>', methods=['DELETE'])
     def delete_book(idbooks):
