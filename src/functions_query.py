@@ -1,8 +1,11 @@
 from flask import redirect, render_template
 # Import the file database.py
 import src.database as db
+import jwt
+import os
 
 database_path = ""
+
 
 def init_db(database):
     global database_path
@@ -245,7 +248,7 @@ def count_records_company():
     cursor.close()
 
 
-# ----------------------DELETE--------------------------
+# ---------------------- DELETE --------------------------
 
 def delete_books_by_id(idbooks):
     con = db.conectdb()
@@ -253,5 +256,58 @@ def delete_books_by_id(idbooks):
     cursor.execute("DELETE FROM books WHERE idbooks = %s", (idbooks,))
 
     con.commit()
+    cursor.close()
+    con.close()
+
+# ---------------------- CREATE USER ----------------
+SECRET_KEY = 'B!1w8NAt1T^%kvhUI*S^'
+
+import traceback
+
+def create_user(user):
+    try:
+        con = db.conectdb()
+        cursor = con.cursor()
+        insert_query = "INSERT INTO user (DNI, Name, Lastname, Email, Password) VALUES (%s, %s, %s, %s, %s)"
+        
+        # Encriptar la contraseña con JWT
+        encoded_password = jwt.encode({'password': str(user['Password'])}, SECRET_KEY, algorithm='HS256')
+        
+        user_data = (user['DNI'], user['Name'], user['Lastname'], user['Email'], encoded_password)
+        cursor.execute(insert_query, user_data)
+        con.commit()
+        cursor.close()
+        con.close()
+    except Exception as e:
+        traceback.print_exc()  # Imprime el traceback del error
+        # Aquí puedes agregar código adicional para manejar el error, como registrar el error en un archivo de registro, enviar una notificación, etc.
+
+# --------------------------- ACCESS USER -----------
+
+
+def login_user(email, password):
+    con = db.conectdb()
+    cursor = con.cursor()
+    
+    # Obtener la contraseña almacenada en la base de datos para el correo electrónico dado
+    select_query = "SELECT Password FROM user WHERE Email = %s"
+    cursor.execute(select_query, (email,))
+    result = cursor.fetchone()
+    
+    # Verificar si se encontró un registro para el correo electrónico dado
+    if result:
+        stored_password = result[0]
+        
+        # Decodificar la contraseña almacenada
+        decoded_password = jwt.decode(stored_password, SECRET_KEY, algorithms=['HS256'])
+        
+        # Comparar la contraseña decodificada con la contraseña no codificada proporcionada
+        if decoded_password['Password'] == password:
+            print("Las credenciales son válidas.")
+        else:
+            print("Contraseña incorrecta.")
+    else:
+        print("No se encontró ningún usuario con el correo electrónico proporcionado.")
+    
     cursor.close()
     con.close()
