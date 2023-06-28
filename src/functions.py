@@ -2,6 +2,11 @@ from flask import redirect, render_template
 # Import the file database.py
 import src.database as db
 
+database_path = ""
+
+def init_db(database):
+    global database_path
+    database_path = database
 
 def get_books():
     con = db.conectdb()
@@ -185,7 +190,7 @@ def loan_of_products(iduser):
                     LEFT JOIN books b ON l.idbooks = b.idbooks
                     LEFT JOIN videos v ON l.idvideos = v.idvideos
                     LEFT JOIN soundTracks s ON l.idsoundTracks = s.idsoundTracks
-                    where u.iduser = ?, [iduser];
+                    where u.iduser = %s, [iduser];
                     """)
 
     myloans = cursor.fetchall()
