@@ -1,7 +1,10 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request, jsonify
 import os
 from .functions_query import *
 from flask_cors import CORS
+from src.models.model_user import *
+
+
 
 def create_app(database):
 
@@ -83,7 +86,41 @@ def create_app(database):
             return "El libro ha sido borrado"
         else:
             return "El libro no existe"
+    
+    # --------------------------- CREATE USER ------------------
 
+    @app.route("/", methods=['POST'])
+    def create_users():
+        dni = request.form['DNI']
+        name = request.form['Name']
+        lastname = request.form['Lastname']
+        email = request.form['Email']
+        password = request.form['Password']
+        user = {
+            'DNI': dni,
+            'Name': name,
+            'Lastname': lastname,
+            'Email': email,
+            'Password': password
+        }
+        create_user(user)
+        return render_template('login.html')
+    
+    # ----------------- ACCESS USER --------------
+    @app.route("/login", methods=['GET', 'POST'])
+    def login():
+        if request.method == 'POST':
+            email = request.form["Email"]
+            password = request.form["Password"]
+            if email and password:
+                print ('@#@#@# get_logged_user', email, password)
+                return render_template('ei.html')
+            user, token = Users.login(email, password)
+            if user:
+                return jsonify({'user': user, 'token': token})    
+            return jsonify({'message': 'Error en el login ROUTER'})
+        else:        
+            return render_template('login.html')
 
     # TO EXECUTE THE APPLICATION
     if __name__ == '__main__':
