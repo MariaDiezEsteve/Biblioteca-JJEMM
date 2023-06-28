@@ -46,3 +46,5 @@ def conectdb():
         print(f"Error al conectarse a la base de datos: {error}")
         return None
 
+    # Tests that the function connects to the database with correct credentials and returns a connection object
+    # Tests that the function returns None when connecting to a non-existent database

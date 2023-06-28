@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for
 import os
-from .functions import *
+from .functions_query import *
 from flask_cors import CORS
 
 def create_app(database):

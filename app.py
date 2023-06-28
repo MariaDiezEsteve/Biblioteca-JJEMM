@@ -10,7 +10,7 @@ import src.database as db
 # Declarate a variable to initializing with Flask
 # Template folder is the directory we are (index.html) is the same as template_dir
 # App will look for the template to execute into an scren
-app= create_app(db)
+app= create_app(db.conectdb())
 app.run(debug=True)
 
 

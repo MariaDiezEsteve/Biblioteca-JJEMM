@@ -157,9 +157,9 @@ def books_by_languages():
     languages_col_Names = [column[0] for column in cursor.description]
     for language in mylanguages:
         languages_array.append(dict(zip(languages_col_Names, language)))
-
-    return render_template('books_by_languages.html', data=languages_array)
     cursor.close()
+    return render_template('books_by_languages.html', data=languages_array)
+   
 
 
 def state_of_products():
@@ -176,9 +176,9 @@ def state_of_products():
     states_col_Names = [column[0] for column in cursor.description]
     for state in mystates:
         states_array.append(dict(zip(states_col_Names, state)))
-
-    return render_template('state_of_products.html', data=states_array)
     cursor.close()
+    return render_template('state_of_products.html', data=states_array)
+    
 
 
 def loan_of_products(iduser):
