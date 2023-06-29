@@ -57,55 +57,7 @@ class Users:
             if conn is not None:
                 conn.close()
                 
-    @staticmethod
-    def generate_token(user, secret):
-        token = jwt.encode({"Email": user["Email"], "Password": user["Password"], "secret": user["secret"], "Rol": user["Rol"]}, secret)
-        return token.decode('utf-8')
    
-
    
-
-    @classmethod
-    def post_user(cls, user):
-        conn = None
-        try:
-            conn = mysql.connector.connect(**DATABASE)
-            c = conn.cursor()
-            c.execute('''
-                INSERT INTO user (DNI, Name, Lastname, Email, Password)
-                VALUES (%s, %s, %s, %s, %s)
-            ''', (user["DNI"], user["Name"], user["Lastname"], user["Email"], user["Password"]))
-            conn.commit()
-            return jsonify({'message': 'user created successfully'}), 200
-        except mysql.connector.Error as e:
-            return jsonify({"Error": str(e)}), 500
-        finally:
-            if conn:
-                conn.close()
-
-
-
-    @classmethod
-    @token_required
-    def get_user_by_id(cls, user_id):
-        try:
-            conn = MySQL.connect(**DATABASE)
-            c = conn.cursor()
-            c.execute("SELECT * FROM users WHERE iduser=?", (user_id,))
-            result = c.fetchone()
-            if result:
-                user = {
-                    "iduser": result[0],
-                    "Name": result[1],
-                    "Lastname": result[2],
-                    "Email": result[3],
-                    "Password": result[4],
-                    "secret": result[5],
-                    "Rol": result[6]
-                }
-                return user
-        except MySQL.Error as e:
-            return jsonify({"Error": str(e)}), 500
-        finally:
-            conn.close()
+    
 
