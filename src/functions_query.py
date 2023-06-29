@@ -22,9 +22,9 @@ def get_books():
     for book in mybooks:
         books_array.append(dict(zip(books_col_Names, book)))
 
-    return render_template('books.html', data=books_array)
     cursor.close()
-
+    return render_template('books.html', data=books_array)
+    
 
 def get_videos():
     con = db.conectdb()
@@ -223,7 +223,6 @@ def count_records_company():
                         WHERE State = 'Disponible'
                         GROUP BY RecordCompany
                         HAVING COUNT(*) > 2;
-
                     """)
 
     mycompanys = cursor.fetchall()
@@ -234,12 +233,13 @@ def count_records_company():
     cursor.close()
     return render_template('recordsCompany_for_state.html', data=companys_array)
    
-def book_by_state():
+def book_by_state(idbooks):
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("""SELECT State,Title
+    query_select = ("""SELECT *
                     FROM books
-                    WHERE idbooks = 27; """)
+                    WHERE idbooks = %s; """)
+    cursor.execute(query_select, (idbooks,))
 
     mybooks_states = cursor.fetchall()
     books_states_array = []
@@ -249,16 +249,44 @@ def book_by_state():
     cursor.close()
     return render_template('book_by_state.html', data=books_states_array)
 
+def change_book_state(idbooks, state):
+    con = db.conectdb()
+    cursor = con.cursor()
+    query_select = (""" UPDATE books SET State = "%s" WHERE idbooks = %s
+                    """)
+    cursor.execute(query_select, (state,) (idbooks,))
+    one_book = cursor.fetchone()
+    book_keep = []
+    keep_colum = [column[0] for column in cursor.description]
+
+    book_keep.append(dict(zip(keep_colum, one_book)))
+    cursor.close()
+    return render_template("book_by_state.html", data=book_keep)
+    
+    
 # ---------------------- DELETE --------------------------
 
 def delete_books_by_id(idbooks):
     con = db.conectdb()
     cursor = con.cursor()
     cursor.execute("DELETE FROM books WHERE idbooks = %s", (idbooks,))
-
     con.commit()
     cursor.close()
     con.close()
+
+
+# ---------------------  EDITAR STATE --------------
+def one_book(idbooks):
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("SELECT * FROM books WHERE idbooks = %s", (idbooks,))
+    one_book = cursor.fetchone()
+    book_keep = []
+    keep_colum = [column[0] for column in cursor.description]
+
+    book_keep.append(dict(zip(keep_colum, one_book)))
+    cursor.close()
+    return render_template("one_book.html", data=book_keep)
 
 # ---------------------- CREATE USER ----------------
 SECRET_KEY = 'B!1w8NAt1T^%kvhUI*S^'

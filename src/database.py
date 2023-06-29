@@ -3,26 +3,6 @@
 #1. We need is a connector: mysql-conector
 import mysql.connector
 
-#2. Set up to connect with database
-#create a variable to connect with mysql
-# def conectdb():
-#     try:
-#         con = mysql.connector.connect(
-#             host = "containers-us-west-59.railway.app",
-#             user = "root",
-#             passwd = "mzj8vF2N8BRe4h8m8cyB",
-#             database = "railway",
-#             port = 5906 
-#         )
-#         print ("conectado ")
-#     except Exception as e:
-#         print (f"error de conexion {e}")
-
-#     return  con
-
-# conectdb()
-
-
 def conectdb():
     host = "containers-us-west-59.railway.app"
     user = "root"

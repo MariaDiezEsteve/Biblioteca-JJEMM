@@ -19,9 +19,13 @@ def create_app(database):
     # We want to show the template index.html so we need to import render template from flask
 
 
-    @app.route("/books")
+    @app.route("/books", methods=['GET', 'POST'])
     def indexb():
-        return get_books()
+        if request.method == 'POST':
+            idbook = request.form['idbook']
+            return one_book(idbook)
+        else: 
+            return get_books()
 
 
     @app.route("/videos")
@@ -102,6 +106,16 @@ def create_app(database):
             return "El libro ha sido borrado"
         else:
             return "El libro no existe"
+        
+
+    @app.route('/books/<int:idbooks>', methods=['GET','PUT'])
+    def keep_id_book(idbooks):
+        if request.method == 'PUT':
+            state = request.form['state']
+            return change_book_state(idbooks, state)
+        else:
+            return book_by_state(idbooks)
+        
     
     # --------------------------- CREATE USER ------------------
 

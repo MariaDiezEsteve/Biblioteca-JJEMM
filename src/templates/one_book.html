@@ -18,40 +18,33 @@
     <title>Document</title>
   </head>
   <body>
-       
-      <div class="caja">
-      <h1 class="text-center nt-5 nb-5 text-info">
-        ¡Agur patata! ¡Kaixo Pepino!
-      </h1>
-     
-      <h2 class="text-center nt-5 nb-5">
-        Muestra el estado de un libro dado su id
-      </h2>
-      <div class="container">
-        <div class="card shadow-box">
-            <div class="card-body">
-                <form action="/books" method="post">
-                    <label for="">Cambia el estado del libro</label>
-                    <input type="text" name="state">
-                    <button type="submit">Buscar</button>
-                </form>
-            </div>
-        </div>
-    </div>
+    <div class="caja">
+      <h1 class="text-center nt-5 nb-5 text-info">Libro por id</h1>
       <div class="container">
         <div class="card shadow-box">
           <div class="card-body">
             <table class="table table-border">
               <thead>
-                <th scope="col">State</th>
+                <th scope="col">ID</th>
                 <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Language</th>
+                <th scope="col">AgeRating</th>
+                <th scope="col">Category</th>
+                <th scope="col">State</th>
               </thead>
 
               <tbody>
                 {% for d in data %}
                 <tr>
-                  <td>{{d.State}}</td>
+                  <td>{{d.idbooks}}</td>
                   <td>{{d.Title}}</td>
+                  <td>{{d.Author}}</td>
+                  <td>{{d.Language}}</td>
+                  <td>{{d.AgeRating}}</td>
+                  <td>{{d.Category}}</td>
+                  <td>{{d.State}}</td>
+                  <td>
                 </tr>
                 {% endfor %}
               </tbody>
