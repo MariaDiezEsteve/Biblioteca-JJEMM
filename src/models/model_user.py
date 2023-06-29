@@ -1,18 +1,16 @@
-from datetime import datetime
-import jwt
-from src.gestor_jwt import token_required
-from flask_mysqldb import MySQL
 from flask import jsonify
 import mysql.connector
 from mysql.connector import errorcode
 from flask import jsonify
+from datetime import datetime
 
 
 DATABASE = {
     'host': "containers-us-west-59.railway.app",
     'user': 'root',
     'password': "mzj8vF2N8BRe4h8m8cyB",
-    'database': "railway"
+    'database': "railway",
+    'port': 5906
 }
 
 class Users:
@@ -30,7 +28,7 @@ class Users:
     def login(cls, Email, Password):
         conn = None
         try:
-            conn = MySQL.connect(**DATABASE)
+            conn = mysql.connector.connect(**DATABASE)
             c = conn.cursor()
             c.execute("SELECT * FROM user WHERE Email=?", (Email, ))
             result = c.fetchone()
@@ -51,7 +49,7 @@ class Users:
             else:
                 return ({"error": "Credenciales inválidas"}), 401
 
-        except MySQL.Error as e:
+        except mysql.connector.Error as e:
             return ({"SQLError": str(e)}, 500)
         finally:
             if conn is not None:

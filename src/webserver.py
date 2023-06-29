@@ -119,13 +119,14 @@ def create_app(database):
         else:
             return "El libro no existe"
         
-
-    @app.route('/books/<int:idbooks>', methods=['GET','PUT'])
+ # ----------- EDIT ---------
+    @app.route('/books/<int:idbooks>', methods=['GET', 'POST'])
     def keep_id_book(idbooks):
-        if request.method == 'PUT':
+        if request.method == 'POST':
             state = request.form['state']
             return change_book_state(idbooks, state)
         else:
+            # Aquí puedes implementar la lógica para obtener el libro por su estado
             return book_by_state(idbooks)
         
     
@@ -158,14 +159,13 @@ def create_app(database):
             email = request.form["Email"]
             password = request.form["Password"]
             if email and password:
-                print ('@#@#@# get_logged_user', email, password)
-                return render_template('ei.html')
-            user, token = Users.login(email, password)
-            if user:
-                return jsonify({'user': user, 'token': token})    
-            return jsonify({'message': 'Error en el login ROUTER'})
-        else:        
-            return render_template('login.html')
+                user, token = Users.login(email, password)
+                if user:
+                    print("user", user)
+                    return render_template('profile.html', user=user)
+                else:
+                    return jsonify({'message': 'Error en el login ROUTER'})
+        return render_template('login.html')
 
     # TO EXECUTE THE APPLICATION
     if __name__ == '__main__':

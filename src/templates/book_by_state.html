@@ -30,11 +30,19 @@
       <div class="container">
         <div class="card shadow-box">
             <div class="card-body">
-                <form action="/books" method="post">
-                    <label for="">Cambia el estado del libro</label>
-                    <input type="text" name="state">
-                    <button type="submit">Buscar</button>
-                </form>
+              {% for d in data %}
+              <form action="/books/{{d.idbooks}}" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <label for="">Cambia el estado del libro</label>
+                <input type="text" name="state">
+                <button type="submit">Cambiar</button>
+            </form>
+            <p>Estados de un libro</p>
+            <ul>
+              <li>Disponible</li>
+              <li>No disponible</li>
+              <li>Extraviado</li>
+            </ul>
             </div>
         </div>
     </div>
@@ -48,7 +56,7 @@
               </thead>
 
               <tbody>
-                {% for d in data %}
+                
                 <tr>
                   <td>{{d.State}}</td>
                   <td>{{d.Title}}</td>

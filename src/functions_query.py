@@ -252,14 +252,20 @@ def book_by_state(idbooks):
 def change_book_state(idbooks, state):
     con = db.conectdb()
     cursor = con.cursor()
-    query_select = (""" UPDATE books SET State = "%s" WHERE idbooks = %s
-                    """)
-    cursor.execute(query_select, (state,) (idbooks,))
-    one_book = cursor.fetchone()
-    book_keep = []
-    keep_colum = [column[0] for column in cursor.description]
+    query_update = "UPDATE books SET State = %s WHERE idbooks = %s"
+    cursor.execute(query_update, (state, idbooks,))
+    con.commit()
 
-    book_keep.append(dict(zip(keep_colum, one_book)))
+    query_select = """SELECT * FROM books WHERE idbooks = %s"""
+    cursor.execute(query_select, (idbooks,))
+    books = cursor.fetchall()
+
+    book_keep = []
+    keep_columns = [column[0] for column in cursor.description]
+
+    for book in books:
+        book_keep.append(dict(zip(keep_columns, book)))
+
     cursor.close()
     return render_template("book_by_state.html", data=book_keep)
     
