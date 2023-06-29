@@ -14,35 +14,45 @@
         <div class="container">
             <div class="card shadow-box">
                 <div class="card-body">
-               <table class="table table-border">
-                <thead>
-                    <th scope="col">#</th>
-                    <th scope="col">DNI</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Lastname</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Password</th>
-                    <th scope="col">Rol</th>
-                 
-                </thead>
-               
-                <tbody>
-                    {% for d in data %}
-                        <tr>
-                            <td>{{d.iduser}}</td>  
-                            <td>{{d.DNI}}</td>   
-                            <td>{{d.Name}}</td>  
-                            <td>{{d.Lastname}}</td>   
-                            <td>{{d.Email}}</td>  
-                            <td>{{d.Password}}</td>   
-                            <td>{{d.Rol}}</td> 
-                        </tr> 
-                    {% endfor %}
-                </tbody>
-            </table>
+                    <form action="/users" method="post">
+                        <label for="">Introduce el id de un usuario</label>
+                        <input type="text" name="iduser">
+                        <button type="submit">Buscar</button>
+                    </form>
                 </div>
             </div>
         </div>
-</div>
+        <div class="container">
+            <div class="card shadow-box">
+                <div class="card-body">
+                    <table class="table table-border">
+                        <thead>
+                            <th scope="col">#</th>
+                            <th scope="col">DNI</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Lastname</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Password</th>
+                            <th scope="col">Rol</th>
+                        </thead>
+                
+                        <tbody>
+                            {% for d in data %}
+                                <tr>
+                                    <td>{{d.iduser}}</td>  
+                                    <td>{{d.DNI}}</td>   
+                                    <td>{{d.Name}}</td>  
+                                    <td>{{d.Lastname}}</td>   
+                                    <td>{{d.Email}}</td>  
+                                    <td>{{d.Password}}</td>   
+                                    <td>{{d.Rol}}</td> 
+                                </tr> 
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
