@@ -186,11 +186,11 @@ def loans_for_date():
     con = db.conectdb()
     cursor = con.cursor()
     cursor.execute("""SELECT loands.*,
-COALESCE(books.Title, videos.Title, soundTracks.Title) AS Title
-FROM railway.loands
-LEFT JOIN railway.books ON loands.idbooks = books.idbooks
-LEFT JOIN railway.videos ON loands.idvideos = videos.idvideos
-LEFT JOIN railway.soundTracks ON loands.idsoundTracks = soundTracks.idsoundTracks
+            COALESCE(books.Title, videos.Title, soundTracks.Title) AS Title
+            FROM railway.loands
+            LEFT JOIN railway.books ON loands.idbooks = books.idbooks
+            LEFT JOIN railway.videos ON loands.idvideos = videos.idvideos
+            LEFT JOIN railway.soundTracks ON loands.idsoundTracks = soundTracks.idsoundTracks
     """)
 
     myloan_dates = cursor.fetchall()
