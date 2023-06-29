@@ -238,10 +238,23 @@ def count_records_company():
     companys_col_Names = [column[0] for column in cursor.description]
     for company in mycompanys:
         companys_array.append(dict(zip(companys_col_Names, company)))
-
-    return render_template('recordsCompany_for_state.html', data=companys_array)
     cursor.close()
+    return render_template('recordsCompany_for_state.html', data=companys_array)
+   
+def book_by_state():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT State,Title
+                    FROM books
+                    WHERE idbooks = 27; """)
 
+    mybooks_states = cursor.fetchall()
+    books_states_array = []
+    books_states_col_Names = [column[0] for column in cursor.description]
+    for books_state in mybooks_states:
+        books_states_array.append(dict(zip(books_states_col_Names, books_state)))
+    cursor.close()
+    return render_template('book_by_state.html', data=books_states_array)
 
 # ---------------------- DELETE --------------------------
 

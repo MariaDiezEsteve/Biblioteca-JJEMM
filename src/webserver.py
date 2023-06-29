@@ -85,6 +85,9 @@ def create_app(database):
     def records_company():
         return count_records_company()    
 
+    @app.route("/book_by_state")
+    def book_state():
+            return book_by_state()   
 
     # ----------------------DELETE--------------------------
   
