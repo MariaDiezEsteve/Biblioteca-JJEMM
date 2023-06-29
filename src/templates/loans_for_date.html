@@ -30,19 +30,25 @@
           <div class="card-body">
             <table class="table table-border">
               <thead>
-                <th scope="col">ID</th>
-                <th scope="col">Total</th>
-                <th scope="col">Total</th>
-                <th scope="col">Total</th>
-                <th scope="col">Total</th>
-                <th scope="col">Total</th>
+                <th scope="col">idloan</th>
+                <th scope="col">iduser</th>
+                <th scope="col">idbooks</th>
+                <th scope="col">idvideos</th>
+                <th scope="col">idsoundtracks</th>
+                <th scope="col">Loandate</th>
+                <th scope="col">Title</th>
               </thead>
 
               <tbody>
                 {% for d in data %}
                 <tr>
-                  <td>{{d.Language}}</td>
-                  <td>{{d.Total}}</td>
+                  <td>{{d.idloan}}</td>
+                  <td>{{d.iduser}}</td>
+                  <td>{{d.idbooks}}</td>
+                  <td>{{d.idvideos}}</td>
+                  <td>{{d.idsoundTracks}}</td>
+                  <td>{{d.LoanDate}}</td>
+                  <td>{{d.Title}}</td>
                 </tr>
                 {% endfor %}
               </tbody>

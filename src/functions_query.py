@@ -185,17 +185,12 @@ def state_of_products():
 def loans_for_date():
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("""SELECT loands.*, 
-    CASE
-        WHEN loands.idbooks IS NOT NULL THEN books.Title
-        WHEN loands.idvideos IS NOT NULL THEN videos.Title
-        WHEN loands.idsoundTracks IS NOT NULL THEN soundTracks.Title
-    END AS Title
-    FROM railway.loands
-    LEFT JOIN railway.books ON loands.idbooks = books.idbooks
-    LEFT JOIN railway.videos ON loands.idvideos = videos.idvideos
-    LEFT JOIN railway.soundTracks ON loands.idsoundTracks = soundTracks.idsoundTracks
-    WHERE loands.LoanDate = '2023-06-26';
+    cursor.execute("""SELECT loands.*,
+COALESCE(books.Title, videos.Title, soundTracks.Title) AS Title
+FROM railway.loands
+LEFT JOIN railway.books ON loands.idbooks = books.idbooks
+LEFT JOIN railway.videos ON loands.idvideos = videos.idvideos
+LEFT JOIN railway.soundTracks ON loands.idsoundTracks = soundTracks.idsoundTracks
     """)
 
     myloan_dates = cursor.fetchall()

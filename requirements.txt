@@ -1,9 +1,7 @@
 flask
 mysql-connector
-<<<<<<< HEAD
 pytest
 flask_cors
-=======
 mysql-connector-python
 pyjwt
->>>>>>> 53a69eede8d5ee8446c5508642729c544b65347a
+flask_mysqldb
