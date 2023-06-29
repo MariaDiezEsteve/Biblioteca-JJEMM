@@ -101,7 +101,6 @@ def get_category_of_books():
     return render_template('category_books.html', data=categorys_array)
     cursor.close()
 
-
 def get_category_of_videos():
     con = db.conectdb()
     cursor = con.cursor()
@@ -117,7 +116,6 @@ def get_category_of_videos():
     return render_template('category_videos.html', data=categorys_array)
     cursor.close()
 
-
 def get_category_for_aventure():
     con = db.conectdb()
     cursor = con.cursor()
@@ -132,8 +130,6 @@ def get_category_for_aventure():
     cursor.close()
     return render_template('category_for_aventure.html', data=categorys_array)
    
-
-
 def books_and_videos_for_age():
     con = db.conectdb()
     cursor = con.cursor()
@@ -147,7 +143,6 @@ def books_and_videos_for_age():
 
     return render_template('category_for_age.html', data=categorys_array)
     cursor.close()
-
 
 def books_by_languages():
     con = db.conectdb()
@@ -163,8 +158,6 @@ def books_by_languages():
     cursor.close()
     return render_template('books_by_languages.html', data=languages_array)
    
-
-
 def state_of_products():
     con = db.conectdb()
     cursor = con.cursor()
@@ -201,26 +194,26 @@ def loans_for_date():
     cursor.close()
     return render_template('loans_for_date.html', data=loan_dates_array)
 
-def loans_for_products():
+def loans_for_products(iduser):
     con = db.conectdb()
     cursor = con.cursor()
-    cursor.execute("""SELECT u.iduser as id, u.Name as name, u.Lastname as lastname, b.Title as book, v.Title as video, s.Title as Soundtrack
+    query_select = ("""SELECT u.iduser as id, u.Name as name, u.Lastname as lastname, b.Title as book, v.Title as video, s.Title as Soundtrack
                     FROM loands l
                     LEFT JOIN user u ON l.iduser = u.iduser
                     LEFT JOIN books b ON l.idbooks = b.idbooks
                     LEFT JOIN videos v ON l.idvideos = v.idvideos
                     LEFT JOIN soundTracks s ON l.idsoundTracks = s.idsoundTracks
-                    where u.iduser = 1005;
+                    where u.iduser = %s;
                     """)
-
+    cursor.execute(query_select, (iduser,))
     myloans = cursor.fetchall()
     loans_array = []
     loans_col_Names = [column[0] for column in cursor.description]
     for loan in myloans:
         loans_array.append(dict(zip(loans_col_Names, loan)))
-
-    return render_template('loans_for_products.html', data=loans_array)
     cursor.close()
+    return render_template('loans_for_products.html', data=loans_array)
+    
     
 def count_records_company():
     con = db.conectdb()
@@ -292,7 +285,6 @@ def create_user(user):
 
 # --------------------------- ACCESS USER -----------
 
-
 def login_user(email, password):
     con = db.conectdb()
     cursor = con.cursor()
@@ -319,3 +311,5 @@ def login_user(email, password):
     
     cursor.close()
     con.close()
+    
+    

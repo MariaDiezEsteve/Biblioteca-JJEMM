@@ -34,9 +34,13 @@ def create_app(database):
         return get_soundtracks()
 
 
-    @app.route("/users")
+    @app.route("/users", methods=['GET', 'POST'] )
     def indexu():
-        return get_users()
+        if request.method == 'POST':
+            iduser = request.form['iduser']
+            return loans_for_products(iduser)
+        else: 
+            return get_users()
 
 
     @app.route("/loans")
@@ -77,9 +81,9 @@ def create_app(database):
     def loans_date():
         return loans_for_date()
     
-    @app.route("/loans_for_products")
-    def loans_products():
-        return loans_for_products()
+    # @app.route("/loans_for_products")
+    # def loans_products():
+    #     return loans_for_products()
     
     @app.route("/RecordsCompany")
     def records_company():
