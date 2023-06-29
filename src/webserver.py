@@ -98,22 +98,25 @@ def create_app(database):
     
     # --------------------------- CREATE USER ------------------
 
-    @app.route("/", methods=['POST'])
+    @app.route("/register", methods=['GET', 'POST'])
     def create_users():
-        dni = request.form['DNI']
-        name = request.form['Name']
-        lastname = request.form['Lastname']
-        email = request.form['Email']
-        password = request.form['Password']
-        user = {
-            'DNI': dni,
-            'Name': name,
-            'Lastname': lastname,
-            'Email': email,
-            'Password': password
-        }
-        create_user(user)
-        return render_template('login.html')
+        if request.method == 'POST':
+            dni = request.form['DNI']
+            name = request.form['Name']
+            lastname = request.form['Lastname']
+            email = request.form['Email']
+            password = request.form['Password']
+            user = {
+                'DNI': dni,
+                'Name': name,
+                'Lastname': lastname,
+                'Email': email,
+                'Password': password
+            }
+            create_user(user)
+            return render_template('login.html')
+        else:
+            return render_template('register.html')
     
     # ----------------- ACCESS USER --------------
     @app.route("/login", methods=['GET', 'POST'])

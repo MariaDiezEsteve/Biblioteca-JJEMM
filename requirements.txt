@@ -4,3 +4,4 @@ pytest
 flask_cors
 mysql-connector-python
 pyjwt
+flask-pyjwt

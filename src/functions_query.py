@@ -129,9 +129,9 @@ def get_category_for_aventure():
     categorys_col_Names = [column[0] for column in cursor.description]
     for category in mycategorys:
         categorys_array.append(dict(zip(categorys_col_Names, category)))
-
-    return render_template('category_for_aventure.html', data=categorys_array)
     cursor.close()
+    return render_template('category_for_aventure.html', data=categorys_array)
+   
 
 
 def books_and_videos_for_age():
@@ -271,7 +271,7 @@ def create_user(user):
         insert_query = "INSERT INTO user (DNI, Name, Lastname, Email, Password) VALUES (%s, %s, %s, %s, %s)"
         
         # Encriptar la contraseña con JWT
-        encoded_password = jwt.encode({'password': str(user['Password'])}, SECRET_KEY, algorithm='HS256')
+        encoded_password = jwt.encode({'password': user['Password']}, SECRET_KEY, algorithm='HS256')
         
         user_data = (user['DNI'], user['Name'], user['Lastname'], user['Email'], encoded_password)
         cursor.execute(insert_query, user_data)
