@@ -92,6 +92,18 @@ def create_app(database):
     @app.route("/book_by_state")
     def book_state():
             return book_by_state()   
+        
+    @app.route("/book_by_category")
+    def book_category():
+            return book_by_category()  
+        
+    @app.route("/loan_by_user")
+    def loan_user():
+            return loan_by_user()  
+        
+    @app.route("/the_prolific_composers")
+    def prolific_composers():
+            return the_prolific_composers()  
 
     # ----------------------DELETE--------------------------
   

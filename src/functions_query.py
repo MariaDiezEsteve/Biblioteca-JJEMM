@@ -249,6 +249,64 @@ def book_by_state():
     cursor.close()
     return render_template('book_by_state.html', data=books_states_array)
 
+def book_by_category():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT Category, GROUP_CONCAT(Title) AS libros_por_categoria
+                    FROM books
+                    GROUP BY Category;
+                    """)
+
+    mybooks_categorys = cursor.fetchall()
+    books_categorys_array = []
+    books_categorys_col_Names = [column[0] for column in cursor.description]
+    for books_category in mybooks_categorys:
+        books_categorys_array.append(dict(zip(books_categorys_col_Names, books_category)))
+    cursor.close()
+    return render_template('book_by_category.html', data=books_categorys_array)
+
+def loan_by_user():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT iduser, COUNT(*) AS LoanCount
+                    FROM loands
+                    GROUP BY iduser
+                    HAVING COUNT(*) > 5;
+
+                    """)
+
+    myuser_loans = cursor.fetchall()
+    user_loans_array = []
+    user_loans_col_Names = [column[0] for column in cursor.description]
+    for user_loan in myuser_loans:
+        user_loans_array.append(dict(zip(user_loans_col_Names, user_loan)))
+    cursor.close()
+    return render_template('loan_by_user.html', data=user_loans_array)
+
+
+
+def the_prolific_composers():
+    con = db.conectdb()
+    cursor = con.cursor()
+    cursor.execute("""SELECT Composer
+                    FROM railway.soundTracks
+                    GROUP BY Composer
+                    HAVING COUNT(*) > (
+                        SELECT AVG(CountsoundTracks)
+                        FROM (
+                            SELECT Composer, COUNT(*) AS CountsoundTracks
+                            FROM railway.soundTracks
+                            GROUP BY Composer
+                        ) AS subquery
+                    );   """)
+
+    myprolifics = cursor.fetchall()
+    prolifics_array = []
+    prolifics_col_Names = [column[0] for column in cursor.description]
+    for prolific in myprolifics:
+        prolifics_array.append(dict(zip(prolifics_col_Names, prolific)))
+    cursor.close()
+    return render_template('the_prolific_composers.html', data=prolifics_array)
 # ---------------------- DELETE --------------------------
 
 def delete_books_by_id(idbooks):
